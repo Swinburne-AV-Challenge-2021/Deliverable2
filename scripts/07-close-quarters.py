@@ -1,9 +1,12 @@
-LANE_WIDTH = 4.0
-
 from environs import Env
 from lgsvl.geometry import Vector
 import lgsvl
 import time
+import copy
+
+LANE_WIDTH = 4.0
+CAR_LENGTH = 8.0
+EGO_INITIAL_POSITION = Vector(-165,10,-120)
 
 env = Env()
 
@@ -15,105 +18,66 @@ else:
 
 spawns = sim.get_spawn()
 
-state = lgsvl.AgentState()
-state.transform = spawns[0]
+egoInitialState = lgsvl.AgentState()
+egoInitialState.transform = spawns[0]
 
-forward = lgsvl.utils.transform_to_forward(spawns[0])
-right = lgsvl.utils.transform_to_right(spawns[0])
+egoInitialState.transform.position = EGO_INITIAL_POSITION
+egoInitialState.transform.rotation.y -= 90
 
-state.transform.position = Vector(-165,10,-120)
-state.transform.rotation.y -= 90
+forward = lgsvl.utils.transform_to_forward(egoInitialState.transform)
+right = lgsvl.utils.transform_to_right(egoInitialState.transform)
 
 #testing
 #state.transform.position = Vector(-190,10,20) # + LANE_WIDTH * right
 #state.transform.rotation.y += 180 
 
-ego = sim.add_agent("2e9095fa-c9b9-4f3f-8d7d-65fa2bb03921", lgsvl.AgentType.EGO, state)
 
-forward = lgsvl.utils.transform_to_forward(spawns[0])
-right = lgsvl.utils.transform_to_right(spawns[0])
+ego = sim.add_agent("2e9095fa-c9b9-4f3f-8d7d-65fa2bb03921", lgsvl.AgentType.EGO, egoInitialState)
 
 
+# Spawn a line of parked cars to the left and right of the ego vehicle
+leftState = copy.deepcopy(egoInitialState)
+rightState = copy.deepcopy(egoInitialState)
+
+# Initial, immediately adjacent cars
+leftState.transform.position -= (LANE_WIDTH  - 1) * right
+rightState.transform.position += LANE_WIDTH * right
+sim.add_agent("Sedan", lgsvl.AgentType.NPC, leftState)
+sim.add_agent("Sedan", lgsvl.AgentType.NPC, rightState)
 
 
+leftPedWp = []
+rightPedWp = []
 
-INITIAL_PED_DISTANCE_AHEAD = 100
+# More cars ahead, leaving room for some pedestrians on the 3rd loop
+for i in range(10):
+    leftState.transform.position += (CAR_LENGTH * forward)
+    rightState.transform.position += (CAR_LENGTH * forward)
 
-wp = []
-state = lgsvl.AgentState()
-spawns = sim.get_spawn()
-ped_initial_pos = Vector(-172, 10, -44)
-wp.append(
-    lgsvl.WalkWaypoint(ped_initial_pos, idle=1, speed=3)
-)
-wp.append(
-    lgsvl.WalkWaypoint( Vector(-172, 10, -22), idle=0, speed=3)
-)
+    if (i != 3):
+        sim.add_agent("Sedan", lgsvl.AgentType.NPC, leftState)
+        sim.add_agent("Sedan", lgsvl.AgentType.NPC, rightState)
+    else:
+        # Add 2 pedestrians, opposite each other and slightly separated by 1/4th the CAR_LENGTH (so they don't collide)
+        leftPedState = copy.deepcopy(leftState)
+        rightPedState = copy.deepcopy(rightState)
+        leftPedState .transform.position += (CAR_LENGTH/4) * forward
+        rightPedState.transform.position -= (CAR_LENGTH/4) * forward
+        leftPed = sim.add_agent("Pamela", lgsvl.AgentType.PEDESTRIAN, leftPedState)
+        rightPed = sim.add_agent("Pamela", lgsvl.AgentType.PEDESTRIAN, rightPedState)
 
-wp.append(
-    lgsvl.WalkWaypoint( Vector(-172, 10, -25), idle=0.5, speed=3)
-)
+        # Set their waypoints to the opposite side of the lane, to be only triggered when the ego is 20m away
+        leftPedWp.append(lgsvl.WalkWaypoint(leftPedState.transform.position, idle=0, trigger_distance=20))
+        leftPedWp.append(lgsvl.WalkWaypoint(rightPedState.transform.position, idle=5, speed=2))
+        rightPedWp.append(lgsvl.WalkWaypoint(rightPedState.transform.position, idle=0, trigger_distance=20))
+        rightPedWp.append(lgsvl.WalkWaypoint(leftPedState.transform.position, idle=5, speed=2))
 
-wp.append(
-    lgsvl.WalkWaypoint( Vector(-172, 10, -30), idle=0.1, speed=3)
-)
-state = lgsvl.AgentState()
-state.transform.position = ped_initial_pos
-p = sim.add_agent("Pamela", lgsvl.AgentType.PEDESTRIAN, state)
-# # This sends the list of waypoints to the pedestrian. The bool controls whether or not the pedestrian will continue walking (default false)
-p.follow(wp, True)
+        leftPed.follow(leftPedWp)
+        rightPed.follow(rightPedWp)
 
-wp = []
-state = lgsvl.AgentState()
-spawns = sim.get_spawn()
-ped_initial_pos = Vector(-174, 10, -22)
-wp.append(
-    lgsvl.WalkWaypoint(ped_initial_pos, idle=1, speed=3)
-)
-
-wp.append(
-    lgsvl.WalkWaypoint( Vector(-174, 10, -25), idle=0.5, speed=3)
-)
-
-wp.append(
-    lgsvl.WalkWaypoint( Vector(-174, 10, -30), idle=0, speed=3)
-)
-wp.append(
-    lgsvl.WalkWaypoint( Vector(-175, 10, -44), idle=0, speed=3)
-)
-state = lgsvl.AgentState()
-state.transform.position = ped_initial_pos
-p = sim.add_agent("Johny", lgsvl.AgentType.PEDESTRIAN, state)
-# # This sends the list of waypoints to the pedestrian. The bool controls whether or not the pedestrian will continue walking (default false)
-p.follow(wp, True)
-
-wp = []
-state = lgsvl.AgentState()
-spawns = sim.get_spawn()
-ped_initial_pos = Vector(-174, 10, -21)
-wp.append(
-    lgsvl.WalkWaypoint(ped_initial_pos, idle=5, speed=2)
-)
-
-wp.append(
-    lgsvl.WalkWaypoint( Vector(-174, 10, -25), idle=0, speed=2)
-)
-
-wp.append(
-    lgsvl.WalkWaypoint( Vector(-174, 10, -30), idle=0, speed=2)
-)
-wp.append(
-    lgsvl.WalkWaypoint( Vector(-175, 10, -48), idle=2, speed=2)
-)
-state = lgsvl.AgentState()
-state.transform.position = ped_initial_pos
-p = sim.add_agent("EntrepreneurFemale", lgsvl.AgentType.PEDESTRIAN, state)
-# # This sends the list of waypoints to the pedestrian. The bool controls whether or not the pedestrian will continue walking (default false)
-p.follow(wp, True)
 
 
 ## -- Apollo Setup -- ##
-
 print("Bridge connected:", ego.bridge_connected)
 #Connect to Apollo bridge
 ego.connect_bridge(env.str("LGSVL__AUTOPILOT_0_HOST", lgsvl.wise.SimulatorSettings.bridge_host), env.int("LGSVL__AUTOPILOT_0_PORT", lgsvl.wise.SimulatorSettings.bridge_port))
@@ -138,9 +102,7 @@ modules = [
 ]
 
 #Set a destination for apollo (straight ahead, to next intersection)
-state = lgsvl.AgentState()
-state.transform.position = Vector(-30,10,-126)
-destination = state.transform.position
+destination = Vector(-30,10,-126)
 dv.setup_apollo(destination.x, destination.z, modules)
 
 sim.run()
