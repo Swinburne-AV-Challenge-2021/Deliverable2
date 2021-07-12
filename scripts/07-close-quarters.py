@@ -8,6 +8,13 @@ LANE_WIDTH = 4.0
 CAR_LENGTH = 8.0
 EGO_INITIAL_POSITION = Vector(-165,10,-120)
 
+
+def on_collision(agent1, agent2, contact):
+  name1 = "STATIC OBSTACLE" if agent1 is None else agent1.name
+  name2 = "STATIC OBSTACLE" if agent2 is None else agent2.name
+  print("{} collided with {} at {}".format(name1, name2, contact))
+
+
 env = Env()
 
 sim = lgsvl.Simulator(env.str("LGSVL__SIMULATOR_HOST", "127.0.0.1"), env.int("LGSVL__SIMULATOR_PORT", 8181))
@@ -26,11 +33,6 @@ egoInitialState.transform.rotation.y -= 90
 
 forward = lgsvl.utils.transform_to_forward(egoInitialState.transform)
 right = lgsvl.utils.transform_to_right(egoInitialState.transform)
-
-#testing
-#state.transform.position = Vector(-190,10,20) # + LANE_WIDTH * right
-#state.transform.rotation.y += 180 
-
 
 ego = sim.add_agent("2e9095fa-c9b9-4f3f-8d7d-65fa2bb03921", lgsvl.AgentType.EGO, egoInitialState)
 
@@ -74,6 +76,8 @@ for i in range(10):
 
         leftPed.follow(leftPedWp)
         rightPed.follow(rightPedWp)
+        leftPed.on_collision(on_collision)
+        rightPed.on_collision(on_collision)
 
 
 
@@ -105,4 +109,4 @@ modules = [
 destination = Vector(-30,10,-126)
 dv.setup_apollo(destination.x, destination.z, modules)
 
-sim.run()
+sim.run(60.0)

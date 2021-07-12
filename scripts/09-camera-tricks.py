@@ -16,7 +16,7 @@ leftSpeed = 10 # 0 - 20
 leftTrigger = 55 # > 0
 rightSpeed = 5 # 0 - 20
 rightTrigger = 45 # > 0
-turnDirection = 0 # {0, 1, 2}
+turnDirection = 0 # {0, 1, 2} 0 - Straight, 1 - Left, 2 - Right
 timeOfDay = 22 # [0, 24)
 weatherQuality = 1.0 # [0.0, 1.0] 0 is good quality, 1 is bad, worst conditions
 
@@ -172,4 +172,4 @@ dv.setup_apollo(destination.x, destination.z, modules)
 sim.weather = lgsvl.WeatherState(rain=weatherQuality, fog=weatherQuality, wetness=weatherQuality, cloudiness=weatherQuality, damage=0)
 sim.set_time_of_day(timeOfDay, fixed=True)
 
-sim.run()
+sim.run(60.0)
