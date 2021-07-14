@@ -44,18 +44,20 @@ def spawn2LaneTraffic(state: ObjectState, count = 0):
         state.transform.position += LANE_WIDTH * right
 
 
-def on_collision(agent1, agent2, contact):
-  name1 = "STATIC OBSTACLE" if agent1 is None else agent1.name
-  name2 = "STATIC OBSTACLE" if agent2 is None else agent2.name
-  print("{} collided with {} at {}".format(name1, name2, contact))
-
-
 env = Env()
 sim = lgsvl.Simulator(env.str("LGSVL__SIMULATOR_HOST", "127.0.0.1"), env.int("LGSVL__SIMULATOR_PORT", 8181))
 if sim.current_scene == "SanFrancisco":
     sim.reset()
 else:
     sim.load("SanFrancisco")
+
+
+def on_collision(agent1, agent2, contact):
+  name1 = "STATIC OBSTACLE" if agent1 is None else agent1.name
+  name2 = "STATIC OBSTACLE" if agent2 is None else agent2.name
+  print("{} collided with {} at {}".format(name1, name2, contact))
+  sim.stop()
+
 
 spawns = sim.get_spawn()
 
