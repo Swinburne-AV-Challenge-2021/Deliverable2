@@ -1,4 +1,3 @@
-from os import system
 import os
 from environs import Env
 from lgsvl.geometry import Vector
