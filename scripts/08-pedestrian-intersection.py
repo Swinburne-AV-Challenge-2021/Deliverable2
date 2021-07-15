@@ -6,7 +6,6 @@ import lgsvl
 import time
 import copy
 import argparse
-import io
 
 # Run script with configurable parameters in Terminal to reduce the memory burden
 if __name__ == '__main__':
