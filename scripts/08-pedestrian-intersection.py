@@ -1,9 +1,12 @@
+from os import system
+import os
 from environs import Env
 from lgsvl.geometry import Vector
 import lgsvl
 import time
 import copy
 import argparse
+import io
 
 # Run script with configurable parameters in Terminal to reduce the memory burden
 if __name__ == '__main__':
@@ -30,12 +33,11 @@ if __name__ == '__main__':
     CAR_LENGTH = 8.0
     NPC_COLOR = Vector(68, 168, 50)
     MAX_CAR_LINE = 10
-
-
-    # Paramters for Metamorphic Testing # input ranges
-    pedDistanceFromIntersection = args.pedDistanceFromIntersection # Meters from the start of the crossing (>= 0), values more than 0 mean spawns back a bit
-    pedSpeed = args.pedSpeed # 0 - 10
-    pedTrigger = args.pedTrigger # > 0
+    PED_STREETPOS,PED_ROADSIDE1,PED_ROADSIDE2,PED_DIRECTION = -12,-15,10,90
+    # Manual arameters for Metamorphic Testing # input ranges
+    #pedDistanceFromIntersection = args.pedDistanceFromIntersection # Meters from the start of the crossing (>= 0), values more than 0 mean spawns back a bit
+    #pedSpeed = args.pedSpeed # 0 - 10
+    #pedTrigger = args.pedTrigger # > 6 (when pedDistanceFromIntersection is 0)
     #timeOfDay = 12 # [0, 24)
     #weatherQuality = 0 # [0.0, 1.0] 0 is good quality, 1 is bad, worst conditions
 
@@ -48,15 +50,31 @@ if __name__ == '__main__':
         sim.load('SanFrancisco')
 
 
-  # Callback function to handle collision
+    # Write test outcome
+    def write_testoutcome(content):
+        try:
+            if not os.path.isdir('tests'):
+                os.makedirs('tests')
+        except IOError:
+            return
+
+        f = open('tests/'+args.testid+'.txt','w')
+        f.write(content)
+        f.close()
+
+    # Used later to determine what to write to the output file
+    testPassed = True
+
+
+    # Callback function to handle collision
     def on_collision(agent1, agent2, contact):
         name1 = 'STATIC OBSTACLE' if agent1 is None else agent1.name
         name2 = 'STATIC OBSTACLE' if agent2 is None else agent2.name
-        outcome = 'TEST CASE {}: {} collided with {} at {}'.format(args.testid, name1, name2, contact)
+        outcome = 'Test failed.\nTEST CASE {}: {} collided with {} at {}'.format(args.testid, name1, name2, contact)
+        global testPassed
+        testPassed = False
         print(outcome)
-        f = open(args.testid+'.txt','w')
-        f.write(outcome)
-        f.close()
+        write_testoutcome(outcome)
         sim.stop()
 
 
@@ -85,21 +103,21 @@ if __name__ == '__main__':
 
     # Pedestrian to cross the path of the ego as it turns left, setting starting point to just at the road
     pedState = copy.deepcopy(egoInitialState)
-    pedState.transform.position.x -= 12
-    pedState.transform.position.z -= 15
-    pedState.transform.rotation.y += 90
-    pedState.transform.position += pedDistanceFromIntersection * forward
+    pedState.transform.position.x += PED_STREETPOS
+    pedState.transform.position.z += PED_ROADSIDE1
+    pedState.transform.rotation.y += PED_DIRECTION
+    pedState.transform.position += args.pedDistanceFromIntersection * forward
 
     ped = sim.add_agent('Pamela', lgsvl.AgentType.PEDESTRIAN, pedState)
 
     # Setting up pedestrian waypoints for across the road
     ped_wp = []
-    ped_wp.append(lgsvl.WalkWaypoint(pedState.transform.position, idle=0, trigger_distance=pedTrigger))
+    ped_wp.append(lgsvl.WalkWaypoint(pedState.transform.position, idle=0, trigger_distance=args.pedTrigger))
     pedFinalState = copy.deepcopy(egoInitialState)
-    pedFinalState.transform.position.x -= 12
-    pedFinalState.transform.position.z += 10
-    pedFinalState.transform.rotation.y += 90
-    ped_wp.append(lgsvl.WalkWaypoint(pedFinalState.transform.position, speed=pedSpeed, idle=0))
+    pedFinalState.transform.position.x += PED_STREETPOS
+    pedFinalState.transform.position.z += PED_ROADSIDE2
+    pedFinalState.transform.rotation.y += PED_DIRECTION
+    ped_wp.append(lgsvl.WalkWaypoint(pedFinalState.transform.position, speed=args.pedSpeed, idle=0))
 
     ped.follow(ped_wp)
     ped.on_collision(on_collision)
@@ -138,3 +156,6 @@ if __name__ == '__main__':
     sim.set_time_of_day(args.timeOfDay, fixed=True)
 
     sim.run(args.simSecond)
+
+    if (testPassed):
+        write_testoutcome('Test passed.')
