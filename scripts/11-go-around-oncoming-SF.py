@@ -62,6 +62,7 @@ if __name__ == '__main__':
         name1 = 'STATIC OBSTACLE' if agent1 is None else agent1.name
         name2 = 'STATIC OBSTACLE' if agent2 is None else agent2.name
         outcome = 'Test failed.\nTEST CASE {}: {} collided with {} at {}'.format(args.testid, name1, name2, contact)
+        outcome += '\nConditions:\n{}'.format(args)
         global testPassed
         testPassed = False
         print(outcome)
