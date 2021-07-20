@@ -61,7 +61,8 @@ if __name__ == '__main__':
     def on_collision(agent1, agent2, contact):
         name1 = 'STATIC OBSTACLE' if agent1 is None else agent1.name
         name2 = 'STATIC OBSTACLE' if agent2 is None else agent2.name
-        outcome = 'Test failed.\nTEST CASE {}: {} collided with {} at {}'.format(args.testid, name1, name2, contact)
+        outcome = 'Test failed.\nTEST CASE {}: {} seconds. {} collided with {} at position {}'.format(args.testid, sim.current_time, name1, name2, contact)
+        outcome += '\nEgo Speed: {} m/s'.format(ego.state.speed)
         outcome += '\nConditions:\n{}'.format(args)
         global testPassed
         testPassed = False
