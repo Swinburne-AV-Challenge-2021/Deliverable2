@@ -132,9 +132,6 @@ if __name__ == '__main__':
     destination = egoInitialState.transform.position + CAR_LENGTH * 5 * forward
     dv.setup_apollo(destination.x, destination.z, modules)
 
-
-    dv.setup_apollo(destination.x, destination.z, modules)
-
     ## -- Setting weather and time of day -- ##
     sim.weather = lgsvl.WeatherState(rain=args.rain, fog=args.fog, wetness=args.wetness, cloudiness=args.cloudiness, damage=args.damage)
     sim.set_time_of_day(args.timeOfDay, fixed=True)
