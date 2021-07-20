@@ -27,13 +27,16 @@ if __name__ == '__main__':
     parser.add_argument('--rightSpeed',type=float,default=5) # 0 - 20
     parser.add_argument('--rightTrigger',type=float,default=45)  # > 0
     parser.add_argument('--turnDirection',type=float,default=0)  # {0, 1, 2} 0 - Straight, 1 - Left, 2 - Right
+    parser.add_argument('--redAmount',type=int,default=0)  # [0,255]
+    parser.add_argument('--greenAmount',type=int,default=0)  # [0,255]
+    parser.add_argument('--blueAmount',type=int,default=0)  # [0,255]
     args = parser.parse_args()
 
 
     # Constants
     LANE_WIDTH = 4.0
     CAR_LENGTH = 8.0
-    NPC_COLOR = Vector(0, 0, 0)
+    NPC_COLOR = Vector(args.redAmount, args.greenAmount, args.blueAmount)
     MAX_CAR_LINE = 10
 
 
