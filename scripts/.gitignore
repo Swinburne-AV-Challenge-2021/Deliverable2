@@ -1,0 +1,4 @@
+# Auto-generated test reports
+/tests
+# Modified shell scripts used for overnight testing
+/overnightTestScripts
