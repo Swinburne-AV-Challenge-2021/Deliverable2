@@ -1,3 +1,3 @@
-bash 07-close-quarters.sh
-bash 08-pedestrian-intersection.sh
-bash 09-camera-tricks.sh
+bash A-close-quarters.sh
+bash B-pedestrian-intersection.sh
+bash C-camera-tricks.sh

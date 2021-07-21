@@ -1,7 +1,7 @@
 # TEST CATEGORY 8: TEST PEDESTRIAN AT INTERSECTION
 # ......................
 compiler=python3
-testscript=08-pedestrian-intersection.py
+testscript=B-pedestrian-intersection.py
 simSecond=60
 # ......................
 # TEST GROUP 8.1: TEST IMPACT OF WEATHER

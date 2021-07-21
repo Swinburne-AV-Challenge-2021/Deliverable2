@@ -1,7 +1,7 @@
 # TEST CATEGORY 7: CLOSE QUARTERS
 # ......................
 compiler=python3
-testscript=07-close-quarters.py
+testscript=A-close-quarters.py
 simSecond=60
 # ......................
 # TEST GROUP 7.1: TEST IMPACT OF WEATHER

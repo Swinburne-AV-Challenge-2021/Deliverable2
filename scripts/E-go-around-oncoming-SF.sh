@@ -1,7 +1,7 @@
 # TEST CATEGORY 11: GO AROUND ONCOMING CAR - SAN FRANCISCO MAP
 # ......................
 compiler=python3
-testscript=11-go-around-oncoming-SF.py
+testscript=E-go-around-oncoming-SF.py
 simSecond=120
 # ......................
 # TEST GROUP 11.1: TEST IMPACT OF WEATHER

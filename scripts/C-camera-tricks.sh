@@ -1,7 +1,7 @@
 # TEST CATEGORY 9: CLOSE QUARTERS
 # ......................
 compiler=python3
-testscript=09-camera-tricks.py
+testscript=C-camera-tricks.py
 simSecond=60
 # ......................
 # TEST GROUP 9.1: TEST IMPACT OF WEATHER
