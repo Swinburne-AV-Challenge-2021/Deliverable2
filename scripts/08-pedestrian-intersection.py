@@ -32,13 +32,7 @@ if __name__ == '__main__':
     NPC_COLOR = Vector(68, 168, 50)
     MAX_CAR_LINE = 10
     PED_STREETPOS,PED_ROADSIDE1,PED_ROADSIDE2,PED_DIRECTION = -12,-15,10,90
-    # Manual arameters for Metamorphic Testing # input ranges
-    #pedDistanceFromIntersection = args.pedDistanceFromIntersection # Meters from the start of the crossing (>= 0), values more than 0 mean spawns back a bit
-    #pedSpeed = args.pedSpeed # 0 - 10
-    #pedTrigger = args.pedTrigger # > 6 (when pedDistanceFromIntersection is 0)
-    #timeOfDay = 12 # [0, 24)
-    #weatherQuality = 0 # [0.0, 1.0] 0 is good quality, 1 is bad, worst conditions
-
+    
 
     env = Env()
     sim = lgsvl.Simulator(env.str('LGSVL__SIMULATOR_HOST', '127.0.0.1'), env.int('LGSVL__SIMULATOR_PORT', 8181))
