@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     # specific arguments - only this test group
     parser.add_argument('--carSpeed',type=float,default=10)
-    parser.add_argument('--carDistance',type=float,default=15)
+    parser.add_argument('--carDistance',type=float,default=15) # [5,30]
     parser.add_argument('--carTrigger',type=float,default=14)
     args = parser.parse_args()
 
@@ -30,9 +30,10 @@ if __name__ == '__main__':
     LANE_WIDTH = 4.0
     CAR_LENGTH = 8.0
     ONCOMING_DIRECTION = 180
-    ONCOMING_GROUND_HEIGHT = -4.726
+    ONCOMING_GROUND_HEIGHT = (-0.1211 * args.carDistance) - 3.0418 # Non-flat road means the height spawn height needs to be automatically adjusted
     EGO_GROUND_HEIGHT = -3.30108
     EGO_GROUND_SPAWN_GAP = 2 # Used to reduce the height above the road that the ego spawns at
+    EGO_CAR_DISTANCE = 15
 
 
     env = Env()
@@ -81,7 +82,7 @@ if __name__ == '__main__':
     right = lgsvl.utils.transform_to_right(egoInitialState.transform)
 
     egoInitialState.transform.position -= LANE_WIDTH * 0.7 * right
-    egoInitialState.transform.position += CAR_LENGTH * args.carDistance * forward
+    egoInitialState.transform.position += CAR_LENGTH * EGO_CAR_DISTANCE * forward
 
     ego = sim.add_agent('2e9095fa-c9b9-4f3f-8d7d-65fa2bb03921', lgsvl.AgentType.EGO, egoInitialState)
 
