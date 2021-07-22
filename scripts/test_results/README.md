@@ -1,0 +1,2 @@
+# Test Results
+This folder contains all output data exported by the Python scripts as text files. Each zip file contains only .txt files from the automated tests run for each scenario. The analysis and presentation of this data is discussed in the paper and written report.
