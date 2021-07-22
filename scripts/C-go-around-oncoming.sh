@@ -1,7 +1,7 @@
 # TEST CATEGORY 10: GO AROUND ONCOMING CAR
 # ......................
 compiler=python3
-testscript=D-go-around-oncoming.py
+testscript=C-go-around-oncoming.py
 simSecond=120
 # ......................
 # TEST GROUP 10.1: TEST IMPACT OF WEATHER
