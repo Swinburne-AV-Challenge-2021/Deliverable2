@@ -12,6 +12,9 @@ The ego vehicle is set to drive to the next intersection, just beyond the line o
 
 It was found with the default values used that the ego vehicle, despite detecting the pedestrians, fails to stop in time and collides with at least one of them.
 
+<img src="A-close-quarters.png" width="100">
+
+***
 
 ## Scenario B - Pedestrian Intersection:
 This scenario also relates to testing Apollo's ability to detect and respond to pedestrians. In this situation, the ego vehicle is set to make a left turn at an intersection. A pedestrian is then triggered to walk across the intersection parallel to the original direction of the ego, directly crossing its path as it makes the turn. Two stationary cars are also placed at the intersection, although their presence serves little direct purpose, only to somewhat block the view of the pedestrian.
@@ -20,6 +23,9 @@ The goal of this test is to again identify if Apollo can respond to pedestrians 
 
 Various values affecting this test scenario are extracted to allow them to be parameterised for automated testing, as further discussed in the report. These values are the speed and trigger distance of the pedestrian, as well as its initial starting distance from the road. Furthermore, as with other scenarios, general parameters are provided for controlling the weather and time of day.
 
+<img src="B-pedestrian-intersection.png" width="200">
+
+***
 
 ## C - Go Around, Oncoming:
 This scenario is about testing the ego's ability to detect and respond to oncoming vehicles, as it tries to get around a blocked car in its way. In some ways, this scenario is similar to Deliverable 1's Scenario 5, where the ego needs to respond to oncoming vehicles. However, this time the ego vehicle is the one that wants to encroach on to the other side of the road.
@@ -28,6 +34,9 @@ This scenario uses the Borregas Avenue map as this map has a road with only 1 la
 
 Although less time was dedicated to testing this scenario with many parameter combinations, from the testing so far, no collision occurs. It is interesting to note that the ego vehicle does not even attempt to go around the blocked car into the other lane, suggesting that the ego vehicle does not want to encroach onto the other side of the road, despite the lane lines. The testers are not familiar with road rules in the US and the line markings are not very clear in the map itself, but it would seem that this particular road should allow vehicles to drive on the other side for overtaking and passing.
 
+<img src="C-go-around-oncoming.png" width="100">
+
+***
 
 ## D - Camera Tricks:
 The goal of this scenario is to understand and confirm the reaction of the ego vehicle in the task of navigating a busy intersection. This is simulated using many stationary NPCs in the parallel lane to the ego's starting position. Additionally, 2 NPC vehicles are triggered to cross the intersection perpendicularly when the ego approaches, thus getting in its way.
@@ -38,6 +47,9 @@ One of the main motivators for creating this specific scenario was to test how w
 
 Even without the weather conditions, it was found from this scenario that the ego will not stop in time when set to drive straight through the intersection, colliding with at least one NPC vehicle in some conditions. This is likely because the ego always has right of way, regardless of its destination direction, however, when it is driving straight, it does not need to slow down so cannot respond to the encroaching perpendicular vehicles. When turning, however, the ego will slow down before the turn, allowing it to detect and avoid the NPCs. Despite this, it can still be possible for the ego to have a collision, even when making a turn.
 
+<img src="D-camera-tricks.png" width="300">
+
+***
 
 ## E - Go Around, OnComing, San Francisco:
 Due to the outcomes from the tests in Scenario C, it was decided to recreate the same scenario on a 2-lane-per-direction road in the San Francisco map. This is because it is known that the ego will change lanes to move around a stationary vehicle. This time, however, the encroaching vehicle would enter the ego's side of the road and pass the stationary NPC in the lane that the ego will use to get around that NPC, thus testing if the ego will stop before it makes its own lane change, or possibly changes back to its original lane to avoid the danger.
@@ -47,3 +59,5 @@ The ego vehicle was set to take a right turn at the next intersection in order t
 This scenario has parameters for speeds for the three different waypoints that the oncoming vehicle moves through. It is possible that the ego vehicle will not react in time if faster speeds are used. Additionally, the usual weather condition parameters are provided.
 
 It was again decided to focus more test automation time on the first three scenarios, resulting in less testing here. We did, however, find that in some cases the ego would halt its lane change as the oncoming vehicle moved past, and then proceed afterwards, with no collision. In other cases, though, the ego did not see the encroaching vehicle early enough and still entered the overtaking lane, or, upon seeing the oncoming NPC, it did not attempt to avoid it.
+
+<img src="E-go-around-oncoming-SF.png" width="150">
