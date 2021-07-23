@@ -27,7 +27,7 @@ As explained in the [map_info](../map_info/README.md), Scenario C did not have a
 
 Finally, Scenario E, although not discussed in the paper, did reveal some failure situations in the AV system. Such issues were mainly due to the vehicle not detecting the behaviour of the oncoming NPC soon enough and thus halting its own lane change, or, upon seeing the oncoming car, not actively avoiding it by moving back into its lane. This also can be an area of focus for developers.
 
-Further discussion and visualisations on the scenarios and test results can be found in the [submitted paper](../presentation/swinburne-paper.pdf).
+Further discussion and visualisations on the scenarios and test results can be found in the [submitted paper](../presentation/AVTest-Swinburne.pdf).
 
 
 ## 4 - Summary and Experience
