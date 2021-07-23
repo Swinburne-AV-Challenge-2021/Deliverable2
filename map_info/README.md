@@ -51,7 +51,7 @@ Even without the weather conditions, it was found from this scenario that the eg
 
 ***
 
-## E - Go Around, OnComing, San Francisco:
+## E - Go Around, Oncoming, San Francisco:
 Due to the outcomes from the tests in Scenario C, it was decided to recreate the same scenario on a 2-lane-per-direction road in the San Francisco map. This is because it is known that the ego will change lanes to move around a stationary vehicle. This time, however, the encroaching vehicle would enter the ego's side of the road and pass the stationary NPC in the lane that the ego will use to get around that NPC, thus testing if the ego will stop before it makes its own lane change, or possibly changes back to its original lane to avoid the danger.
 
 The ego vehicle was set to take a right turn at the next intersection in order to ensure that it returned to the original lane it started in, thus effectively going around.
