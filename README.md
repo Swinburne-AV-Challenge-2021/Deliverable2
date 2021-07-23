@@ -15,3 +15,10 @@ This repository contains all project files and reports from Group 110 for Delive
 * Group member details: [group_info](group_info.md)
 
 The work from this repository was also used to write a research paper which has been submitted separately. Alternatively, it can also be found in the [presentation](presentation) folder.
+
+## Contributors
+
+* John Seymour, Department of Computer Science and Software Engineering, Swinburne University of Technology, Hawthorn, VIC 3122, Australia. Email: john.seymour787@gmail.com
+* Chuong Ho, Department of Computer Science and Software Engineering, Swinburne University of Technology, Hawthorn, VIC 3122, Australia. Email: hodacthanhchuong@gmail.com
+* Dr. Quang-Hung Luu, Department of Computer Science and Software Engineering, Swinburne University of Technology, Hawthorn, VIC 3122, Australia. Email: hluu@swin.edu.au
+
