@@ -17,7 +17,6 @@ Individual links to the videos are as follows:
 
 ## 3. Scenario C - Go Around, Oncoming
 * [Pass](https://drive.google.com/file/d/17yh5_rDVK39CGBzgT9vokshgZSmts8Pi/view?usp=sharing)
-* [Full Video](https://drive.google.com/file/d/1e06bGICz1bWh1UjVSDkWIBfnN9_qnrTv/view?usp=sharing)
 ***
 
 ## 4. Scenario D - Camera Tricks
